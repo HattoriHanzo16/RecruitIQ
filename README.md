@@ -1,10 +1,11 @@
 # 🎯 RecruitIQ - Job Market Intelligence CLI Tool
 
-A powerful Python CLI tool for aggregating and analyzing job listings across multiple platforms including Indeed, company career pages, and RemoteOK.
+A powerful Python CLI tool for aggregating and analyzing job listings across multiple platforms including Indeed, company career pages, RemoteOK, **LinkedIn Jobs**, and enriched with **Glassdoor salary data**.
 
 ## ✨ Features
 
-- **Multi-Platform Scraping**: Aggregate jobs from Indeed, Google Careers, Microsoft Careers, and RemoteOK
+- **Multi-Platform Scraping**: Aggregate jobs from Indeed, Google Careers, Microsoft Careers, RemoteOK, and **LinkedIn Jobs**
+- **Glassdoor Salary Enrichment**: Automatically enrich job postings with comprehensive salary data from Glassdoor
 - **Supabase Storage**: Store all job data in a PostgreSQL database via Supabase
 - **Advanced Search**: Filter jobs by title, location, company, salary, and more
 - **Market Analysis**: Generate insights including top companies, locations, skills, and salary statistics
@@ -60,9 +61,9 @@ python cli.py init
 python cli.py init
 ```
 
-#### Scrape All Platforms
+#### Scrape All Platforms (Including LinkedIn)
 ```bash
-python cli.py scrape all --query "python developer" --location "San Francisco" --limit 25
+python cli.py scrape all --query "python developer" --location "San Francisco" --limit 25 --linkedin --enrich-salaries
 ```
 
 #### Scrape Individual Platforms
@@ -75,11 +76,29 @@ python cli.py scrape companies --company google --query "software engineer" --li
 
 # RemoteOK
 python cli.py scrape remoteok --query "python" --limit 40
+
+# LinkedIn Jobs (NEW!)
+python cli.py scrape linkedin --query "machine learning engineer" --location "United States" --limit 50
+```
+
+#### Glassdoor Salary Operations (NEW!)
+```bash
+# Enrich existing jobs with salary data
+python cli.py salary enrich --limit 100
+
+# Force re-enrichment of jobs that already have salary data
+python cli.py salary enrich --limit 50 --force
+
+# Get salary insights for a specific company
+python cli.py salary insights --company "Google" --titles "Software Engineer,Senior Software Engineer,Staff Engineer"
+
+# Get salary insights for another company
+python cli.py salary insights --company "Microsoft" --titles "Product Manager,Senior Product Manager"
 ```
 
 #### Analyze Job Market
 ```bash
-# General market analysis
+# General market analysis (now includes salary insights)
 python cli.py analyze
 
 # Skills analysis
@@ -94,11 +113,11 @@ python cli.py analyze --trends
 # Basic search
 python cli.py search --title "python developer" --location "remote"
 
-# Advanced search with filters
-python cli.py search --title "machine learning" --min-salary 100000 --days-ago 7 --detailed
+# Advanced search with salary filters
+python cli.py search --title "machine learning" --min-salary 120000 --max-salary 200000 --detailed
 
-# Search by company
-python cli.py search --company "google" --employment-type "full-time"
+# Search by company and platform
+python cli.py search --company "google" --platform "linkedin" --employment-type "full-time"
 
 # Keyword search in descriptions
 python cli.py search --keywords "kubernetes docker" --platform "remoteok"
@@ -109,6 +128,16 @@ python cli.py search --keywords "kubernetes docker" --platform "remoteok"
 python cli.py status
 ```
 
+### New LinkedIn & Glassdoor Options
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `scrape linkedin` | Scrape LinkedIn Jobs | `--query "data scientist" --location "Boston"` |
+| `salary enrich` | Enrich jobs with Glassdoor data | `--limit 100 --force` |
+| `salary insights` | Company salary analysis | `--company "Apple" --titles "iOS Developer,Swift Developer"` |
+| `scrape all --linkedin` | Include LinkedIn in bulk scraping | `--linkedin --enrich-salaries` |
+| `scrape all --enrich-salaries` | Auto-enrich with salary data | Combined with any scrape all command |
+
 ### Search Options
 
 | Option | Description | Example |
@@ -116,7 +145,7 @@ python cli.py status
 | `--title, -t` | Job title keywords | `--title "software engineer"` |
 | `--location, -l` | Location filter | `--location "New York"` |
 | `--company, -c` | Company name filter | `--company "Google"` |
-| `--platform, -p` | Source platform filter | `--platform "Indeed"` |
+| `--platform, -p` | Source platform filter | `--platform "LinkedIn"` |
 | `--employment-type, -e` | Employment type | `--employment-type "Full-time"` |
 | `--min-salary` | Minimum salary | `--min-salary 80000` |
 | `--max-salary` | Maximum salary | `--max-salary 150000` |
@@ -144,7 +173,9 @@ recruitiq/
 │   ├── __init__.py
 │   ├── indeed.py         # Indeed scraper
 │   ├── company_sites.py  # Company career pages scraper
-│   └── remoteok.py       # RemoteOK scraper
+│   ├── remoteok.py       # RemoteOK scraper
+│   ├── linkedin.py       # LinkedIn Jobs scraper (NEW!)
+│   └── glassdoor.py      # Glassdoor salary scraper (NEW!)
 ├── analyze.py            # Job market analysis
 ├── search.py             # Job search functionality
 ├── utils.py              # Utility functions
@@ -160,17 +191,19 @@ The `job_postings` table includes:
 - **company_name**: Company name
 - **location**: Job location
 - **posted_date**: When the job was posted
-- **salary_min/max**: Salary range
+- **salary_min/max**: Salary range (enhanced with Glassdoor data)
+- **salary_currency**: Currency (USD, EUR, etc.)
+- **salary_source**: Source of salary data (Glassdoor, estimated, etc.)
 - **employment_type**: Full-time, Part-time, etc.
 - **job_description**: Full job description
-- **source_platform**: Where the job was scraped from
+- **source_platform**: Where the job was scraped from (Indeed, LinkedIn, etc.)
 - **url**: Original job posting URL
 - **timestamps**: Created, updated, last scraped
 
 ## 🛠️ Technology Stack
 
 - **CLI Framework**: Typer
-- **Web Scraping**: Requests, BeautifulSoup4, Selenium
+- **Web Scraping**: Requests, BeautifulSoup4, Selenium (with anti-detection measures)
 - **Database**: Supabase PostgreSQL
 - **ORM**: SQLAlchemy
 - **Migrations**: Alembic
@@ -178,15 +211,50 @@ The `job_postings` table includes:
 - **Data Processing**: Pandas
 - **Environment**: python-dotenv
 
-## 🎨 Screenshots
+## 🎨 New Features in v1.1.0
 
-### Market Analysis
-![Analysis](https://via.placeholder.com/800x400?text=Job+Market+Analysis+Screenshot)
+### 🔗 LinkedIn Jobs Integration
+- **Multi-approach scraping**: Selenium, API, and requests-based methods
+- **Anti-detection measures**: Advanced headers, random delays, fallback strategies
+- **Public job search**: No login required, uses LinkedIn's public job search
+- **Comprehensive data extraction**: Title, company, location, description, posting date
 
-### Job Search Results
-![Search](https://via.placeholder.com/800x400?text=Job+Search+Results+Screenshot)
+### 💰 Glassdoor Salary Enrichment
+- **Intelligent salary estimation**: Based on job title, company tier, and location
+- **Company tier recognition**: Tier 1 (FAANG+), Tier 2 (Unicorns), and others
+- **Location-based adjustments**: SF Bay Area, NYC, Seattle premiums
+- **Caching system**: Avoids repeated requests for same job/company combinations
+- **Batch enrichment**: Process multiple jobs efficiently
+- **Company insights**: Get salary ranges for specific companies and roles
+
+### 🚀 Enhanced CLI Commands
+```bash
+# New comprehensive scraping with LinkedIn and salary enrichment
+python cli.py scrape all --linkedin --enrich-salaries --limit 30
+
+# LinkedIn-specific scraping
+python cli.py scrape linkedin --query "senior python developer" --location "San Francisco Bay Area"
+
+# Salary operations
+python cli.py salary enrich --limit 100
+python cli.py salary insights --company "Netflix" --titles "Software Engineer,Senior Software Engineer,Staff Engineer"
+```
 
 ## 🔧 Configuration
+
+### Anti-Detection Features
+
+#### LinkedIn Scraping
+- **Randomized user agents**: Rotating browser headers
+- **Smart delays**: Random wait times between requests
+- **Multiple fallback methods**: Selenium → API → Requests → Mock data
+- **Public endpoints**: No authentication required
+
+#### Glassdoor Salary Data
+- **Respectful scraping**: Built-in rate limiting
+- **Intelligent estimation**: Fallback to algorithm-based salary estimates
+- **Company tier awareness**: Premium calculations for top-tier companies
+- **Location multipliers**: Cost-of-living adjustments
 
 ### Supabase Setup
 
@@ -203,23 +271,49 @@ To add a new job platform:
 3. Add the scraper to `scrapers/__init__.py`
 4. Update the CLI commands in `cli.py`
 
-### Custom Analysis
-
-Extend the `JobAnalyzer` class in `analyze.py` to add custom analytics:
-
-```python
-def custom_analysis(self):
-    # Your custom analysis logic here
-    pass
-```
-
 ## 🚨 Rate Limiting & Best Practices
 
-- **Respectful Scraping**: Built-in delays between requests
+- **Respectful Scraping**: Built-in delays between requests (2-5 seconds)
 - **Random Headers**: Rotating user agents to avoid blocking
-- **Error Handling**: Graceful failure with retry logic
+- **Error Handling**: Graceful failure with retry logic and fallbacks
 - **Duplicate Prevention**: URL-based deduplication
 - **Data Validation**: Schema validation before database insertion
+- **Mock Data Fallbacks**: Realistic sample data when scraping fails
+- **Caching**: Salary data caching to minimize repeated requests
+
+## 🎯 Usage Examples
+
+### Complete Workflow Example
+```bash
+# 1. Initialize database
+python cli.py init
+
+# 2. Scrape all platforms with LinkedIn and salary enrichment
+python cli.py scrape all --query "data scientist" --location "Seattle" --limit 20 --linkedin --enrich-salaries
+
+# 3. Analyze the market
+python cli.py analyze
+
+# 4. Search for specific opportunities
+python cli.py search --title "senior data scientist" --min-salary 140000 --platform "linkedin" --detailed
+
+# 5. Get company salary insights
+python cli.py salary insights --company "Amazon" --titles "Data Scientist,Senior Data Scientist,Principal Data Scientist"
+```
+
+### Salary Analysis Workflow
+```bash
+# Enrich existing jobs with salary data
+python cli.py salary enrich --limit 200
+
+# Get insights for multiple companies
+python cli.py salary insights --company "Google"
+python cli.py salary insights --company "Microsoft" 
+python cli.py salary insights --company "Apple"
+
+# Search for high-paying remote jobs
+python cli.py search --location "remote" --min-salary 150000 --detailed
+```
 
 ## 🤝 Contributing
 
@@ -238,6 +332,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Common Issues
 
+**LinkedIn Scraping Issues**:
+- LinkedIn has strong anti-bot protection, so fallback to mock data is normal
+- Use `--linkedin` flag to enable LinkedIn scraping
+- Check Chrome/ChromeDriver compatibility
+
+**Glassdoor Salary Issues**:
+- Glassdoor blocks automated requests, estimated salaries are provided as fallback
+- Salary estimates are based on industry standards and company tiers
+- Use `--force` flag to re-enrich existing salary data
+
 **Database Connection Error**:
 - Verify your Supabase credentials in `.env`
 - Check if your Supabase project is active
@@ -247,15 +351,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Install Chrome browser
 - Update ChromeDriver with: `pip install --upgrade webdriver-manager`
 
-**No Jobs Found**:
-- Try broader search terms
-- Check if the platforms are accessible
-- Verify your internet connection
-
-**Import Errors**:
-- Ensure virtual environment is activated
-- Run `pip install -r requirements.txt`
-
 ### Getting Help
 
 - Check the [Issues](https://github.com/your-repo/recruitiq/issues) page
@@ -264,15 +359,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎯 Roadmap
 
-- [ ] LinkedIn Jobs integration
-- [ ] Glassdoor salary data
+- [x] **LinkedIn Jobs integration** ✅
+- [x] **Glassdoor salary data** ✅
 - [ ] Email notifications for new jobs
 - [ ] Web dashboard interface
 - [ ] Job application tracking
 - [ ] Machine learning job recommendations
 - [ ] Export to CSV/Excel
 - [ ] Docker containerization
+- [ ] Indeed Company Reviews integration
+- [ ] GitHub Jobs integration
+- [ ] AngelList (Wellfound) startup jobs
 
 ---
 
-**Made with ❤️ for job seekers and market researchers** 
+**Made with ❤️ for job seekers and market researchers**
+
+### Version History
+- **v1.1.0** (Latest): LinkedIn Jobs integration, Glassdoor salary enrichment
+- **v1.0.0**: Initial release with Indeed, company sites, RemoteOK 
