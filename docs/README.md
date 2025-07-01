@@ -4,6 +4,29 @@
 
 # 🎯 RecruitIQ - AI-Powered Job Market Intelligence Platform
 
+## 🎬 **Live Demo**
+
+<div align="center">
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║                    🎥 WATCH RECRUITIQ IN ACTION             ║
+║                                                              ║
+║            See the platform's powerful features             ║
+║              and AI capabilities in real-time               ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+[![🎥 Watch Demo Video](https://img.shields.io/badge/🎥_Watch_Demo-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/B62vfQzLzsQ)
+
+[![Demo Preview](https://img.shields.io/badge/✨_Interactive_Demo-Live_Preview-blue?style=for-the-badge&logo=play&logoColor=white)](https://youtu.be/B62vfQzLzsQ)
+[![Features Showcase](https://img.shields.io/badge/🚀_Features-Full_Walkthrough-green?style=for-the-badge&logo=rocket&logoColor=white)](https://youtu.be/B62vfQzLzsQ)
+[![AI Analysis](https://img.shields.io/badge/🤖_AI_Analysis-See_It_Work-orange?style=for-the-badge&logo=openai&logoColor=white)](https://youtu.be/B62vfQzLzsQ)
+
+---
+
+</div>
+
 ```
 ██████╗ ███████╗ ██████╗██████╗ ██╗   ██╗██╗████████╗██╗ ██████╗
 ██╔══██╗██╔════╝██╔════╝██╔══██╗██║   ██║██║╚══██╔══╝██║██╔═══██╗
