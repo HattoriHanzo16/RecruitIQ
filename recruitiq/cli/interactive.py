@@ -116,9 +116,10 @@ class InteractiveRecruitIQ:
                     ("2", "🔍 Search Jobs", "Search and filter local job database"),
                     ("3", "📊 Analytics", "View job market analysis and trends"),
                     ("4", "💰 Salary Insights", "Glassdoor salary data and insights"),
-                    ("5", "⚙️  Settings", "Configure scraping preferences"),
-                    ("6", "📋 Status", "View system status and statistics"),
-                    ("7", "❓ Help", "Get help and documentation"),
+                    ("5", "🤖 CV Analysis", "AI-powered CV analysis and job matching"),
+                    ("6", "⚙️  Settings", "Configure scraping preferences"),
+                    ("7", "📋 Status", "View system status and statistics"),
+                    ("8", "❓ Help", "Get help and documentation"),
                     ("0", "🚪 Exit", "Exit RecruitIQ")
                 ]
                 
@@ -135,7 +136,7 @@ class InteractiveRecruitIQ:
                 self.show_status_bar()
                 
                 try:
-                    choice = Prompt.ask("Choose option", choices=["0", "1", "2", "3", "4", "5", "6", "7"])
+                    choice = Prompt.ask("Choose option", choices=["0", "1", "2", "3", "4", "5", "6", "7", "8"])
                     
                     if choice == "1":
                         self.scrape_all_interactive()
@@ -146,10 +147,12 @@ class InteractiveRecruitIQ:
                     elif choice == "4":
                         self.show_salary_insights()
                     elif choice == "5":
-                        self.show_settings()
+                        self.show_cv_analysis()
                     elif choice == "6":
-                        self.show_status()
+                        self.show_settings()
                     elif choice == "7":
+                        self.show_status()
+                    elif choice == "8":
                         self.show_help()
                     elif choice == "0":
                         break
@@ -410,6 +413,34 @@ class InteractiveRecruitIQ:
         
         input("\nPress Enter to continue...")
 
+    def show_cv_analysis(self):
+        """Interactive CV analysis"""
+        self.clear_screen()
+        self.show_header()
+        
+        try:
+            from ..core.cv_analyzer import CVAnalyzer
+            
+            analyzer = CVAnalyzer()
+            
+            if not analyzer.openai_client:
+                self.console.print("[yellow]⚠️ OpenAI not configured. Using basic analysis.[/yellow]")
+                self.console.print("[dim]Set OPENAI_API_KEY environment variable for AI-powered analysis.[/dim]")
+                input("\nPress Enter to continue with basic analysis...")
+            
+            analyzer.interactive_cv_analysis()
+            
+        except ImportError as e:
+            if "openai" in str(e).lower():
+                self.console.print("[red]❌ OpenAI package not installed.[/red]")
+                self.console.print("[yellow]Install with: pip install openai[/yellow]")
+            else:
+                self.console.print(f"[red]❌ Missing dependencies: {e}[/red]")
+        except Exception as e:
+            self.console.print(f"[red]❌ Error in CV analysis: {e}[/red]")
+        
+        input("\nPress Enter to continue...")
+
     def show_settings(self):
         """Display settings and configuration"""
         self.clear_screen()
@@ -465,6 +496,14 @@ class InteractiveRecruitIQ:
 2. Use [cyan]Search Jobs[/cyan] to find specific roles in your local database
 3. Use [cyan]Analytics[/cyan] to understand job market trends
 4. Use [cyan]Salary Insights[/cyan] to research compensation data
+5. Use [cyan]CV Analysis[/cyan] to get AI-powered feedback on your resume
+
+[bold]CV Analysis Features:[/bold]
+• AI-powered skills extraction and feedback
+• Job matching based on your CV
+• Personalized improvement suggestions
+• Targeted job scraping recommendations
+• Requires OpenAI API key for full functionality
 
 [bold]Scraping Tips:[/bold]
 • Start with comprehensive scraping for best results
@@ -475,6 +514,10 @@ class InteractiveRecruitIQ:
 • Use keywords to search job descriptions
 • Filter by location, company
 • Use detailed view for complete information
+
+[bold]API Keys:[/bold]
+• Set OPENAI_API_KEY environment variable for CV analysis
+• Get your key from https://platform.openai.com/
 
 [bold]Keyboard Shortcuts:[/bold]
 • [cyan]0[/cyan] - Go back / Exit

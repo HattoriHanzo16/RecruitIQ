@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, or_
 from typing import Dict, List, Any, Optional
 from collections import Counter
 from datetime import datetime, timedelta
@@ -651,7 +651,7 @@ class JobAnalyzer:
             remote_keywords = ['remote', 'work from home', 'distributed', 'telecommute']
             remote_jobs = session.query(JobPosting).filter(
                 JobPosting.is_active == True,
-                func.or_(*[JobPosting.location.ilike(f'%{keyword}%') for keyword in remote_keywords])
+                or_(*[JobPosting.location.ilike(f'%{keyword}%') for keyword in remote_keywords])
             ).count()
             
             console.print(f"\n🌐 Remote Work Statistics:")

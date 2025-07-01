@@ -484,6 +484,102 @@ def report(
         raise typer.Exit(1)
 
 @app.command()
+def cv_test(
+    cv_path: str = typer.Argument(..., help="Path to CV file to test parsing")
+):
+    """🔧 Test CV file parsing (debug utility)"""
+    
+    try:
+        from ..core.cv_analyzer import CVAnalyzer
+        
+        console.print(f"[blue]🔧 Testing CV parsing: {cv_path}[/blue]")
+        
+        analyzer = CVAnalyzer()
+        
+        # Test file parsing only
+        cv_text = analyzer.parse_cv_file(cv_path)
+        
+        console.print(f"\n[green]✅ File parsed successfully![/green]")
+        console.print(f"[cyan]Text length: {len(cv_text)} characters[/cyan]")
+        console.print(f"[cyan]Word count: {len(cv_text.split())} words[/cyan]")
+        
+        if len(cv_text.strip()) > 200:
+            console.print(f"\n[yellow]First 500 characters:[/yellow]")
+            console.print(f"[dim]{cv_text[:500]}...[/dim]")
+        else:
+            console.print(f"\n[yellow]Full text:[/yellow]")
+            console.print(f"[dim]{cv_text}[/dim]")
+        
+        # Test basic skills extraction
+        basic_skills = analyzer._extract_basic_skills(cv_text)
+        if basic_skills:
+            console.print(f"\n[green]✅ Basic skills detected:[/green]")
+            for category, skills in basic_skills.items():
+                console.print(f"  {category}: {skills}")
+        else:
+            console.print(f"\n[yellow]⚠️ No basic skills detected[/yellow]")
+        
+    except Exception as e:
+        console.print(f"[red]❌ Error testing CV: {e}[/red]")
+        raise typer.Exit(1)
+
+@app.command()
+def cv_analysis(
+    cv_path: str = typer.Argument(..., help="Path to CV file (PDF, DOCX, or TXT)"),
+    match_jobs: bool = typer.Option(True, "--match/--no-match", help="Match jobs from database"),
+    suggest_scraping: bool = typer.Option(True, "--suggest/--no-suggest", help="Suggest scraping query"),
+    run_scraping: bool = typer.Option(False, "--scrape", help="Automatically run scraping for better matches")
+):
+    """🤖 AI-powered CV analysis and job matching"""
+    
+    try:
+        from ..core.cv_analyzer import CVAnalyzer
+        
+        analyzer = CVAnalyzer()
+        
+        if not analyzer.openai_client:
+            console.print("[yellow]⚠️ OpenAI not configured. Using basic analysis.[/yellow]")
+            console.print("[dim]Set OPENAI_API_KEY environment variable for AI-powered analysis.[/dim]")
+        
+        console.print(f"[blue]🤖 Analyzing CV: {cv_path}[/blue]")
+        
+        # Parse and analyze CV
+        cv_text = analyzer.parse_cv_file(cv_path)
+        analysis = analyzer.ai_analyze_cv(cv_text)
+        
+        # Display analysis
+        analyzer.display_cv_analysis(analysis)
+        
+        # Match jobs if requested
+        if match_jobs:
+            console.print("\n[yellow]🎯 Matching jobs from database...[/yellow]")
+            matched_jobs = analyzer.match_jobs(analysis)
+            analyzer.display_job_matches(matched_jobs)
+            
+            # Suggest scraping if few matches
+            if suggest_scraping and len(matched_jobs) < 5:
+                suggested_query = analyzer.suggest_scraping_query(analysis)
+                console.print(f"\n[cyan]💡 Suggested scraping query: {suggested_query}[/cyan]")
+                console.print(f"[dim]Run: recruitiq scrape all --query \"{suggested_query}\"[/dim]")
+                
+                if run_scraping:
+                    console.print("[blue]🕷️ Running targeted scraping...[/blue]")
+                    analyzer._run_targeted_scraping(suggested_query, analysis)
+        
+    except FileNotFoundError:
+        console.print(f"[red]❌ CV file not found: {cv_path}[/red]")
+        raise typer.Exit(1)
+    except ImportError as e:
+        if "openai" in str(e).lower():
+            console.print("[red]❌ OpenAI package not installed. Install with: pip install openai[/red]")
+        else:
+            console.print(f"[red]❌ Missing dependencies: {e}[/red]")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[red]❌ Error during CV analysis: {e}[/red]")
+        raise typer.Exit(1)
+
+@app.command()
 def search(
     title: Optional[str] = typer.Option(None, "--title", "-t", help="Job title keywords"),
     location: Optional[str] = typer.Option(None, "--location", "-l", help="Location filter"),

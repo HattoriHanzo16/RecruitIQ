@@ -17,7 +17,7 @@ from pathlib import Path
 
 from ..db.session import get_session
 from ..db.models import JobPosting
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, or_
 from rich.console import Console
 
 console = Console()
@@ -222,7 +222,7 @@ class RecruitIQReporter:
         
         if job_titles:
             title_filters = [JobPosting.title.ilike(f'%{title}%') for title in job_titles]
-            query = query.filter(func.or_(*title_filters))
+            query = query.filter(or_(*title_filters))
         
         jobs = query.all()
         
@@ -342,7 +342,7 @@ class RecruitIQReporter:
         
         if companies:
             company_filters = [JobPosting.company_name.ilike(f'%{company}%') for company in companies]
-            query = query.filter(func.or_(*company_filters))
+            query = query.filter(or_(*company_filters))
         
         jobs = query.all()
         
