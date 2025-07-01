@@ -41,7 +41,7 @@ setup(
     description="Job Market Intelligence Platform - Beautiful CLI with analytics, reporting, and comprehensive job market insights",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/recruitiq",
+    url="https://github.com/HattoriHanzo16/RecruitIQ",
     packages=find_packages(),
     include_package_data=True,
     package_data={
@@ -81,8 +81,8 @@ setup(
     },
     keywords="jobs, scraping, analysis, cli, career, recruitment, interactive, terminal, tui, analytics, intelligence",
     project_urls={
-        "Bug Reports": "https://github.com/yourusername/recruitiq/issues",
-        "Source": "https://github.com/yourusername/recruitiq", 
-        "Documentation": "https://github.com/yourusername/recruitiq#readme",
+                "Bug Reports": "https://github.com/HattoriHanzo16/RecruitIQ/issues",
+        "Source": "https://github.com/HattoriHanzo16/RecruitIQ",
+        "Documentation": "https://github.com/HattoriHanzo16/RecruitIQ#readme",
     },
 ) 

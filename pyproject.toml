@@ -49,9 +49,9 @@ dependencies = [
 ]
 
 [project.urls]
-"Bug Reports" = "https://github.com/yourusername/recruitiq/issues"
-"Source" = "https://github.com/yourusername/recruitiq"
-"Documentation" = "https://github.com/yourusername/recruitiq#readme"
+"Bug Reports" = "https://github.com/HattoriHanzo16/RecruitIQ/issues"
+"Source" = "https://github.com/HattoriHanzo16/RecruitIQ"
+"Documentation" = "https://github.com/HattoriHanzo16/RecruitIQ#readme"
 
 [project.scripts]
 recruitiq = "recruitiq.cli.main:app"

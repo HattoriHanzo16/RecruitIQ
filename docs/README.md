@@ -1,10 +1,12 @@
-# 🎯 RecruitIQ - Job Market Intelligence Platform
-
 <div align="center">
+
+<img src="images/logo.png" alt="RecruitIQ Logo" width="300" />
+
+# 🎯 RecruitIQ - Job Market Intelligence Platform
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey)](https://github.com/yourusername/recruitiq)
+[![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey)](https://github.com/HattoriHanzo16/RecruitIQ)
 
 **The most advanced job market intelligence platform with beautiful CLI interfaces, comprehensive analytics, and professional reporting.**
 
@@ -30,7 +32,7 @@ RecruitIQ transforms job market research from tedious manual work into intellige
 ### One-Line Installation
 
 ```bash
-git clone https://github.com/yourusername/recruitiq.git
+git clone https://github.com/HattoriHanzo16/RecruitIQ.git
 cd recruitiq
 python scripts/install.py
 ```
@@ -39,7 +41,7 @@ python scripts/install.py
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/recruitiq.git
+git clone https://github.com/HattoriHanzo16/RecruitIQ.git
 cd recruitiq
 
 # Install dependencies
@@ -239,7 +241,7 @@ Predictive market insights:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/recruitiq.git
+git clone https://github.com/HattoriHanzo16/RecruitIQ.git
 cd recruitiq
 
 # Create virtual environment
@@ -302,9 +304,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🤝 Support
 
-- **Documentation**: [GitHub Wiki](https://github.com/yourusername/recruitiq/wiki)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/recruitiq/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/recruitiq/discussions)
+- **Documentation**: [GitHub Wiki](https://github.com/HattoriHanzo16/RecruitIQ/wiki)
+- **Issues**: [GitHub Issues](https://github.com/HattoriHanzo16/RecruitIQ/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/HattoriHanzo16/RecruitIQ/discussions)
 
 ## 🙏 Acknowledgments
 
@@ -319,6 +321,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repo if RecruitIQ helps you land your dream job! ⭐**
 
-[🏠 Home](https://github.com/yourusername/recruitiq) • [📚 Docs](https://github.com/yourusername/recruitiq/wiki) • [🐛 Issues](https://github.com/yourusername/recruitiq/issues) • [💬 Discussions](https://github.com/yourusername/recruitiq/discussions)
+[🏠 Home](https://github.com/HattoriHanzo16/RecruitIQ) • [📚 Docs](https://github.com/HattoriHanzo16/RecruitIQ/wiki) • [🐛 Issues](https://github.com/HattoriHanzo16/RecruitIQ/issues) • [💬 Discussions](https://github.com/HattoriHanzo16/RecruitIQ/discussions)
 
 </div> 

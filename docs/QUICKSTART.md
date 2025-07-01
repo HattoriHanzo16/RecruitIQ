@@ -13,7 +13,7 @@ Get up and running with RecruitIQ in under 5 minutes!
 ### Option 1: One-Line Installer (Recommended)
 
 ```bash
-git clone https://github.com/yourusername/recruitiq.git
+git clone https://github.com/HattoriHanzo16/RecruitIQ.git
 cd recruitiq
 python scripts/install.py
 ```
@@ -22,7 +22,7 @@ python scripts/install.py
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/recruitiq.git
+git clone https://github.com/HattoriHanzo16/RecruitIQ.git
 cd recruitiq
 
 # Install dependencies
@@ -239,9 +239,9 @@ You now have RecruitIQ set up and know the basics. Here's what to do next:
 ## 📚 Next Steps
 
 - Read the [full documentation](README.md) for advanced features
-- Join our [community discussions](https://github.com/yourusername/recruitiq/discussions)
-- Report [issues or request features](https://github.com/yourusername/recruitiq/issues)
-- Contribute to the project on [GitHub](https://github.com/yourusername/recruitiq)
+- Join our [community discussions](https://github.com/HattoriHanzo16/RecruitIQ/discussions)
+- Report [issues or request features](https://github.com/HattoriHanzo16/RecruitIQ/issues)
+- Contribute to the project on [GitHub](https://github.com/HattoriHanzo16/RecruitIQ)
 
 ---
 
