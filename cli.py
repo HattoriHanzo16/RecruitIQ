@@ -392,15 +392,31 @@ def salary_insights(
 @app.command()
 def analyze(
     skills: bool = typer.Option(False, "--skills", help="Show skills analysis"),
-    trends: bool = typer.Option(False, "--trends", help="Show job posting trends")
+    trends: bool = typer.Option(False, "--trends", help="Show job posting trends"),
+    salary: bool = typer.Option(False, "--salary", help="Show salary intelligence"),
+    company: bool = typer.Option(False, "--company", help="Show company insights"),
+    geographic: bool = typer.Option(False, "--geographic", help="Show geographic analysis"),
+    interactive: bool = typer.Option(False, "--interactive", help="Launch interactive analytics menu")
 ):
     """📊 Generate and display job market analysis"""
     
     analyzer = JobAnalyzer()
     
-    if skills:
+    if interactive:
+        while analyzer.interactive_analytics_menu():
+            pass
+    elif skills:
         console.print("\n")
         analyzer.display_skills_analysis()
+    elif salary:
+        console.print("\n")
+        analyzer.display_salary_intelligence()
+    elif company:
+        console.print("\n")
+        analyzer.display_company_insights()
+    elif geographic:
+        console.print("\n")
+        analyzer.display_geographic_analysis()
     elif trends:
         console.print("\n[bold blue]📈 Job Market Trends (30 days)[/bold blue]")
         trends_data = analyzer.analyze_job_trends(30)
@@ -411,6 +427,52 @@ def analyze(
             console.print(f"[red]Error: {trends_data['error']}[/red]")
     else:
         analyzer.display_summary()
+
+@app.command()
+def report(
+    type: str = typer.Option("executive", "--type", "-t", help="Report type: executive, market, salary, skills, company"),
+    output: str = typer.Option("reports", "--output", "-o", help="Output directory"),
+    days: int = typer.Option(30, "--days", "-d", help="Analysis period in days"),
+    focus_role: str = typer.Option("", "--role", "-r", help="Focus on specific job role"),
+    job_titles: str = typer.Option("", "--titles", help="Job titles for salary analysis (comma-separated)"),
+    companies: str = typer.Option("", "--companies", help="Companies to analyze (comma-separated)"),
+    open_browser: bool = typer.Option(True, "--open/--no-open", help="Open report in browser")
+):
+    """📊 Generate beautiful HTML reports"""
+    
+    console.print(f"[blue]Generating {type} report...[/blue]")
+    
+    try:
+        analyzer = JobAnalyzer()
+        
+        kwargs = {'output_dir': output}
+        
+        if type == "executive":
+            kwargs['days'] = days
+        elif type == "market" and focus_role:
+            kwargs['focus_role'] = focus_role
+        elif type == "salary" and job_titles:
+            kwargs['job_titles'] = [title.strip() for title in job_titles.split(',')]
+        elif type == "company" and companies:
+            kwargs['companies'] = [comp.strip() for comp in companies.split(',')]
+        
+        file_path = analyzer.generate_html_report(type, **kwargs)
+        
+        if file_path:
+            console.print(f"[green]✅ Report generated: {file_path}[/green]")
+            
+            if open_browser:
+                import webbrowser
+                import os
+                webbrowser.open(f"file://{os.path.abspath(file_path)}")
+                console.print("[cyan]📱 Report opened in browser[/cyan]")
+        else:
+            console.print("[red]❌ Report generation failed[/red]")
+            console.print("[yellow]💡 Make sure you have installed: pip install plotly jinja2[/yellow]")
+            
+    except Exception as e:
+        console.print(f"[red]❌ Error generating report: {e}[/red]")
+        raise typer.Exit(1)
 
 @app.command()
 def search(

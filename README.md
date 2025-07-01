@@ -12,9 +12,13 @@ A beautiful, powerful terminal interface for aggregating and analyzing job listi
 
 - 🖥️ **Beautiful Interactive Interface** - Modern terminal UI with intuitive navigation
 - 🕷️ **Multi-Platform Scraping** - Indeed, LinkedIn, RemoteOK, Company Sites & more
-- 📊 **Real-Time Analytics** - Job market trends, salary insights, and skills analysis
-- 🔍 **Advanced Search** - Filter jobs by title, location, company, salary, and more
-- 💰 **Salary Intelligence** - Glassdoor integration for compensation data
+- 📊 **Advanced Analytics Suite** - Executive dashboards, salary intelligence, skills analysis
+- 📈 **Interactive HTML Reports** - Beautiful, exportable reports with charts and insights
+- 🔍 **Advanced Search & Filtering** - Multiple criteria with real-time results
+- 💰 **Comprehensive Salary Intelligence** - Location-based, company-specific compensation data
+- 🏢 **Company Intelligence** - Hiring patterns, activity trends, and competitive analysis
+- 📍 **Geographic Market Analysis** - Location-based insights and remote work trends
+- 🛠️ **Skills Demand Forecasting** - Technology trends and in-demand skills tracking
 - 🗄️ **Local Database** - Fast searches and offline analysis
 - ⚡ **Progress Tracking** - Real-time feedback during scraping operations
 - 🎨 **Rich Terminal UI** - Beautiful colors, panels, tables, and progress bars
@@ -113,6 +117,87 @@ Interactive search with:
 - **📋 Result Modes** - Summary tables or detailed job descriptions
 - **⚡ Real-Time Search** - Instant results as you type criteria
 
+## 📊 Advanced Analytics Suite
+
+### Executive Dashboard
+- **📈 Market Overview** - Total jobs, growth rates, platform distribution
+- **💰 Salary Statistics** - Average, median, range analysis across all data
+- **🏆 Top Performers** - Leading companies, locations, and hiring trends
+- **📅 Time Series Analysis** - Job posting trends and growth patterns
+
+### Salary Intelligence
+- **🌍 Geographic Analysis** - Location-based salary comparisons
+- **🏢 Company Benchmarking** - Compensation by organization
+- **📊 Salary Distribution** - Percentile analysis and market positioning
+- **💼 Role-Specific Insights** - Job title compensation breakdowns
+
+### Skills Demand Analysis
+- **🛠️ Technology Trends** - Most in-demand programming languages and frameworks
+- **📈 Skill Growth** - Emerging technologies and declining skills
+- **🎯 Market Gaps** - Underserved skills and opportunities
+- **🔗 Skill Correlation** - Related technologies and skill combinations
+
+### Company Intelligence
+- **📊 Hiring Activity** - Company recruitment patterns and volumes
+- **💰 Compensation Benchmarks** - Company-specific salary data
+- **📍 Geographic Presence** - Where companies are hiring
+- **📈 Growth Trends** - Expanding vs. contracting organizations
+
+### Geographic Market Analysis
+- **🗺️ Market Distribution** - Job concentration by location
+- **💰 Cost of Living Adjusted Salaries** - Location-based compensation analysis
+- **🌐 Remote Work Trends** - Remote vs. on-site opportunities
+- **🏙️ Emerging Markets** - Growing job markets and opportunities
+
+## 📈 Interactive HTML Reports
+
+Generate beautiful, shareable reports with:
+
+### Executive Summary Report
+```bash
+recruitiq report --type executive --days 30
+```
+- **📊 Key Metrics Dashboard** - Total jobs, growth rates, platform breakdown
+- **📈 Interactive Charts** - Platform distribution, top companies
+- **💰 Salary Overview** - Market compensation summary
+- **📱 Mobile-Responsive** - Beautiful design that works anywhere
+
+### Market Intelligence Report
+```bash
+recruitiq report --type market --role "data scientist"
+```
+- **🎯 Role-Specific Analysis** - Focus on particular job types
+- **📍 Geographic Distribution** - Location-based market insights
+- **📊 Time Series Charts** - Posting trends and patterns
+- **🏢 Company Activity** - Who's hiring and where
+
+### Salary Analysis Report
+```bash
+recruitiq report --type salary --titles "software engineer,senior engineer"
+```
+- **💰 Comprehensive Salary Data** - Multiple role comparisons
+- **📊 Percentile Analysis** - Market positioning insights
+- **🏢 Company Benchmarks** - Organization-specific compensation
+- **📈 Interactive Visualizations** - Sortable, filterable charts
+
+### Skills Demand Report
+```bash
+recruitiq report --type skills
+```
+- **🛠️ Technology Landscape** - Programming languages, frameworks, tools
+- **📈 Demand Trends** - Growing and declining technologies
+- **🎯 Market Opportunities** - Underserved skills and niches
+- **📊 Category Breakdown** - Languages, frameworks, databases, cloud
+
+### Company Insights Report
+```bash
+recruitiq report --type company --companies "Google,Microsoft,Apple"
+```
+- **🏢 Hiring Patterns** - Company recruitment strategies
+- **💰 Compensation Analysis** - Organization salary benchmarks
+- **📍 Geographic Presence** - Where companies are expanding
+- **📊 Competitive Analysis** - Side-by-side company comparisons
+
 ## 💰 Salary Intelligence
 
 Glassdoor-powered salary insights:
@@ -168,11 +253,71 @@ recruitiq
 
 For power users, all functionality is available via command line:
 
+### Analytics Commands
 ```bash
-# Traditional CLI commands (bypass interactive interface)
-recruitiq --no-interactive scrape all --query "python developer"
-recruitiq --no-interactive search --title "senior engineer" --detailed
-recruitiq --no-interactive analyze --skills
+# Interactive analytics menu
+recruitiq analyze --interactive
+
+# Executive summary
+recruitiq analyze
+
+# Skills analysis
+recruitiq analyze --skills
+
+# Salary intelligence
+recruitiq analyze --salary
+
+# Company insights
+recruitiq analyze --company
+
+# Geographic analysis
+recruitiq analyze --geographic
+```
+
+### HTML Report Generation
+```bash
+# Executive summary report
+recruitiq report --type executive --days 30
+
+# Market intelligence for specific role
+recruitiq report --type market --role "data scientist"
+
+# Salary analysis for multiple titles
+recruitiq report --type salary --titles "software engineer,senior engineer,staff engineer"
+
+# Skills demand report
+recruitiq report --type skills
+
+# Company insights report
+recruitiq report --type company --companies "Google,Microsoft,Apple"
+
+# Custom output directory
+recruitiq report --type executive --output custom_reports
+```
+
+### Advanced Scraping
+```bash
+# Comprehensive scraping with all options
+recruitiq --no-interactive scrape all --query "python developer" --linkedin --enrich-salaries
+
+# Platform-specific scraping
+recruitiq scrape linkedin --query "machine learning engineer" --location "San Francisco"
+recruitiq scrape indeed --query "data scientist" --location "New York"
+
+# Company-specific scraping
+recruitiq scrape companies --company google --query "software engineer"
+```
+
+### Advanced Search
+```bash
+# Multi-criteria search
+recruitiq search --title "senior engineer" --location "remote" --min-salary 120000 --detailed
+
+# Company and platform filtering
+recruitiq search --company "google" --platform "linkedin" --employment-type "full-time"
+
+# Keyword-based search
+recruitiq search --keywords "kubernetes docker" --platform "remoteok" --days-ago 7
 ```
 
 ## 🏗️ Architecture

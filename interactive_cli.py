@@ -302,17 +302,22 @@ class InteractiveRecruitIQ:
         input("\nPress Enter to continue...")
 
     def show_analytics(self):
-        """Display analytics dashboard"""
+        """Display advanced analytics dashboard"""
         self.clear_screen()
         self.show_header()
         
         analyzer = JobAnalyzer()
         
-        self.console.print(Panel("📊 Job Market Analytics", style="blue"))
+        self.console.print(Panel("📊 Advanced Job Market Analytics", style="blue"))
         
         analytics_menu = [
-            ("1", "📈 Summary Dashboard", "Complete overview"),
-            ("2", "🛠️  Skills Analysis", "Most in-demand skills"),
+            ("1", "📈 Executive Summary", "Complete overview with key metrics"),
+            ("2", "🛠️  Skills Intelligence", "In-demand skills and technologies"),
+            ("3", "💰 Salary Analysis", "Comprehensive salary insights"),
+            ("4", "🏢 Company Insights", "Company hiring patterns"),
+            ("5", "📍 Geographic Analysis", "Location-based market insights"),
+            ("6", "📊 Generate HTML Report", "Export beautiful analytics reports"),
+            ("7", "🎛️  Advanced Analytics", "Interactive analytics menu"),
             ("0", "⬅️  Back", "Return to main menu")
         ]
         
@@ -326,14 +331,29 @@ class InteractiveRecruitIQ:
         
         self.console.print(table)
         
-        choice = Prompt.ask("Select analytics", choices=["1", "2", "0"])
+        choice = Prompt.ask("Select analytics", choices=["0", "1", "2", "3", "4", "5", "6", "7"])
         
         if choice == "1":
-            with Status("📊 Generating summary...", console=self.console):
+            with Status("📊 Generating executive summary...", console=self.console):
                 analyzer.display_summary()
         elif choice == "2":
-            with Status("🛠️ Analyzing skills...", console=self.console):
+            with Status("🛠️ Analyzing skills demand...", console=self.console):
                 analyzer.display_skills_analysis()
+        elif choice == "3":
+            with Status("💰 Analyzing salary data...", console=self.console):
+                analyzer.display_salary_intelligence()
+        elif choice == "4":
+            with Status("🏢 Analyzing company insights...", console=self.console):
+                analyzer.display_company_insights()
+        elif choice == "5":
+            with Status("📍 Analyzing geographic data...", console=self.console):
+                analyzer.display_geographic_analysis()
+        elif choice == "6":
+            analyzer.interactive_report_generation()
+        elif choice == "7":
+            # Interactive analytics menu loop
+            while analyzer.interactive_analytics_menu():
+                pass
         
         if choice != "0":
             input("\nPress Enter to continue...")
