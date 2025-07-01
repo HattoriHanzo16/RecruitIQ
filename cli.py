@@ -34,14 +34,27 @@ salary_app = typer.Typer(name="salary", help="💰 Glassdoor salary data operati
 app.add_typer(scrape_app, name="scrape")
 app.add_typer(salary_app, name="salary")
 
-@app.callback()
-def main():
+@app.callback(invoke_without_command=True)
+def main(
+    ctx: typer.Context,
+    interactive: bool = typer.Option(True, "--interactive/--no-interactive", help="Launch interactive interface")
+):
     """
     🎯 RecruitIQ - Job Market Intelligence CLI Tool
     
     Aggregate and analyze job listings across different job platforms.
     """
-    pass
+    # If no command is specified, launch interactive interface
+    if ctx.invoked_subcommand is None and interactive:
+        try:
+            from interactive_cli import main as interactive_main
+            interactive_main()
+        except ImportError:
+            console.print("[red]❌ Interactive interface not available. Try: python interactive_cli.py[/red]")
+        except Exception as e:
+            console.print(f"[red]❌ Error launching interactive interface: {e}[/red]")
+            console.print("[yellow]💡 Try running individual commands instead[/yellow]")
+        raise typer.Exit()
 
 @app.command()
 def init():
