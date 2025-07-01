@@ -12,14 +12,26 @@ from pathlib import Path
 
 def print_header():
     """Print the installation header"""
-    print("""
+    try:
+        # Import the ASCII art from our utility module
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        from recruitiq.utils.ascii_art import print_welcome_banner
+        
+        print_welcome_banner()
+        print("\n🚀 INSTALLATION STARTING...")
+        print("   Setting up your Job Market Intelligence Platform\n")
+    except ImportError:
+        # Fallback to simple banner if import fails
+        print("""
 ╭─────────────────────────────────────────────────────────────╮
 │                                                             │
 │           🎯 RecruitIQ Installation                         │
 │           Job Market Intelligence CLI Tool                   │
 │                                                             │
 ╰─────────────────────────────────────────────────────────────╯
-    """)
+        """)
 
 def check_python_version():
     """Check if Python version is compatible"""

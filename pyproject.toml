@@ -54,7 +54,7 @@ dependencies = [
 "Documentation" = "https://github.com/yourusername/recruitiq#readme"
 
 [project.scripts]
-recruitiq = "main:main"
+recruitiq = "recruitiq.cli.main:app"
 
 [tool.setuptools.packages.find]
 include = ["recruitiq*"]

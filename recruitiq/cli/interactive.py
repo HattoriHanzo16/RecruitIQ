@@ -59,19 +59,26 @@ class InteractiveRecruitIQ:
         os.system('clear' if os.name == 'posix' else 'cls')
     
     def show_header(self):
-        """Display the application header"""
-        header_text = Text()
-        header_text.append("🎯 ", style="bold red")
-        header_text.append("RecruitIQ", style="bold blue")
-        header_text.append(" - Job Market Intelligence", style="bold")
+        """Display the application header with raccoon ASCII art"""
+        try:
+            # Import and display the raccoon banner
+            from ..utils.ascii_art import get_compact_raccoon_banner
+            self.console.print(get_compact_raccoon_banner(), style="cyan")
+        except ImportError:
+            # Fallback to simple header if import fails
+            header_text = Text()
+            header_text.append("🎯 ", style="bold red")
+            header_text.append("RecruitIQ", style="bold blue")
+            header_text.append(" - Job Market Intelligence", style="bold")
+            
+            header_panel = Panel(
+                Align.center(header_text),
+                style="blue",
+                padding=(1, 2)
+            )
+            
+            self.console.print(header_panel)
         
-        header_panel = Panel(
-            Align.center(header_text),
-            style="blue",
-            padding=(1, 2)
-        )
-        
-        self.console.print(header_panel)
         self.console.print()
     
     def show_status_bar(self):

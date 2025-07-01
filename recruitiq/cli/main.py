@@ -47,6 +47,15 @@ def main(
     # If no command is specified, launch interactive interface
     if ctx.invoked_subcommand is None and interactive:
         try:
+            # Show welcome banner before launching interactive interface
+            try:
+                from ..utils.ascii_art import print_welcome_banner
+                print_welcome_banner()
+                console.print("[cyan]🚀 Welcome to RecruitIQ! Starting interactive interface...[/cyan]\n")
+                time.sleep(1)  # Brief pause to let user see the banner
+            except ImportError:
+                pass  # Skip banner if import fails
+            
             from .interactive import main as interactive_main
             interactive_main()
         except ImportError:
