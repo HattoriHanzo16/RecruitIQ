@@ -4,8 +4,8 @@ from sqlalchemy import func, desc
 from typing import Dict, List, Any, Optional
 from collections import Counter
 from datetime import datetime, timedelta
-from db.session import get_session
-from db.models import JobPosting
+from ..db.session import get_session
+from ..db.models import JobPosting
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -352,14 +352,14 @@ class JobAnalyzer:
         try:
             # Try multiple import approaches for better compatibility
             try:
-                from reports import RecruitIQReporter
+                from .reporter import RecruitIQReporter
             except ImportError:
                 import importlib.util
                 import os
                 
-                # Get the absolute path to reports.py
-                reports_path = os.path.join(os.path.dirname(__file__), 'reports.py')
-                spec = importlib.util.spec_from_file_location("reports", reports_path)
+                # Get the absolute path to reporter.py
+                reports_path = os.path.join(os.path.dirname(__file__), 'reporter.py')
+                spec = importlib.util.spec_from_file_location("reporter", reports_path)
                 reports_module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(reports_module)
                 RecruitIQReporter = reports_module.RecruitIQReporter

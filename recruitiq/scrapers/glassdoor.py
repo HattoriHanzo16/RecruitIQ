@@ -13,7 +13,7 @@ import random
 import re
 from datetime import datetime
 from urllib.parse import quote, urljoin
-from utils import (
+from ..utils.helpers import (
     clean_text, parse_salary, get_random_headers, 
     wait_random_time
 )

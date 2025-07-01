@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from typing import List, Dict, Any, Optional
 import time
 import json
-from utils import (
+from ..utils.helpers import (
     clean_text, parse_salary, parse_date, get_random_headers, 
     wait_random_time, extract_employment_type, validate_job_data
 )

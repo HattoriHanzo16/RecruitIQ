@@ -15,8 +15,8 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 
-from db.session import get_session
-from db.models import JobPosting
+from ..db.session import get_session
+from ..db.models import JobPosting
 from sqlalchemy import func, desc
 from rich.console import Console
 

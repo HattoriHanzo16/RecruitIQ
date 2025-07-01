@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from db.base import SessionLocal, engine, Base
-from db.models import JobPosting
+from .base import SessionLocal, engine, Base
+from .models import JobPosting
 
 def create_tables():
     """Create all database tables"""

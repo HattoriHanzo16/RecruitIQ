@@ -13,8 +13,8 @@ from typing import Dict, List, Any, Optional, Tuple
 from collections import Counter
 import re
 
-from db.session import get_session
-from db.models import JobPosting
+from ..db.session import get_session
+from ..db.models import JobPosting
 from sqlalchemy import func, desc, and_, or_
 from rich.console import Console
 from rich.table import Table

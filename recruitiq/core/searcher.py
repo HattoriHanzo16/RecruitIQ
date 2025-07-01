@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_, func, desc
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
-from db.session import get_session
-from db.models import JobPosting
+from ..db.session import get_session
+from ..db.models import JobPosting
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel

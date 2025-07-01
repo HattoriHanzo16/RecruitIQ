@@ -51,7 +51,8 @@ def setup_database():
     print("\n🗄️  Setting up database...")
     
     try:
-        from db.session import init_db
+        # Package should already be installed at this point
+        from recruitiq.db.session import init_db
         init_db()
         print("✅ Database initialized successfully")
     except Exception as e:
@@ -89,7 +90,7 @@ def create_desktop_shortcut():
             shell = Dispatch('WScript.Shell')
             shortcut = shell.CreateShortCut(path)
             shortcut.Targetpath = target
-            shortcut.Arguments = f'"{os.path.join(wDir, "cli.py")}"'
+            shortcut.Arguments = f'"{os.path.join(wDir, "main.py")}"'
             shortcut.WorkingDirectory = wDir
             shortcut.IconLocation = icon
             shortcut.save()
@@ -116,7 +117,7 @@ Version=1.0
 Type=Application
 Name=RecruitIQ
 Comment=Job Market Intelligence CLI Tool
-Exec={sys.executable} {os.path.join(os.getcwd(), "cli.py")}
+Exec={sys.executable} {os.path.join(os.getcwd(), "main.py")}
 Icon=terminal
 Terminal=true
 Categories=Development;
@@ -154,12 +155,12 @@ def print_success():
 │                                                             │
 │   Get started:                                              │
 │   • Run 'recruitiq' to open the interactive interface       │
-│   • Or use 'python cli.py' if global install failed        │
+│   • Or use 'python main.py' if global install failed       │
 │                                                             │
 │   First steps:                                              │
-│   1. Initialize database: recruitiq init                    │
-│   2. Start scraping: Use the interactive interface          │
-│   3. Analyze data: Built-in analytics and search            │
+│   1. Start scraping: Use the interactive interface          │
+│   2. Analyze data: Built-in analytics and search            │
+│   3. Generate reports: Export beautiful HTML reports        │
 │                                                             │
 │           Happy job hunting! 🚀                             │
 │                                                             │
@@ -173,9 +174,9 @@ def main():
     try:
         check_python_version()
         install_dependencies()
-        setup_database()
+        setup_command_alias()  # Install package first
+        setup_database()       # Then initialize database
         install_chrome_driver()
-        setup_command_alias()
         
         # Optional features
         response = input("\n🎨 Create desktop shortcut? (y/N): ").lower()

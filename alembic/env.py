@@ -18,8 +18,8 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Add your model's MetaData object here for 'autogenerate' support
-from db.base import Base
-from db.models import JobPosting
+from recruitiq.db.base import Base
+from recruitiq.db.models import JobPosting
 
 target_metadata = Base.metadata
 

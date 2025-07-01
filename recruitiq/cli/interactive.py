@@ -26,12 +26,12 @@ from rich.rule import Rule
 from rich.status import Status
 
 # Import RecruitIQ modules
-from scrapers import IndeedScraper, CompanyScraper, RemoteOKScraper, LinkedInScraper, GlassdoorScraper
-from analyze import JobAnalyzer
-from search import JobSearcher
-from db.session import init_db, get_session
-from db.models import JobPosting
-from utils import validate_job_data
+from ..scrapers import IndeedScraper, CompanyScraper, RemoteOKScraper, LinkedInScraper, GlassdoorScraper
+from ..core.analyzer import JobAnalyzer
+from ..core.searcher import JobSearcher
+from ..db.session import init_db, get_session
+from ..db.models import JobPosting
+from ..utils.validators import validate_job_data
 
 class InteractiveRecruitIQ:
     """Interactive CLI interface for RecruitIQ"""
@@ -249,7 +249,7 @@ class InteractiveRecruitIQ:
         saved_count = 0
         
         try:
-            from db.session import update_or_create_job_posting
+            from ..db.session import update_or_create_job_posting
             
             for job_data in jobs:
                 if validate_job_data(job_data):

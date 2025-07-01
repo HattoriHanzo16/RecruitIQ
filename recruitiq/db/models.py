@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Float, Boolean, UniqueConstraint
 from sqlalchemy.sql import func
-from db.base import Base
+from .base import Base
 
 class JobPosting(Base):
     """SQLAlchemy model for job postings"""

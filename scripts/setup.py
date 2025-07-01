@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 import os
 
-# Get the current directory (project root)
-current_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the parent directory (project root)
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Read README from docs directory
-readme_path = os.path.join(current_dir, "docs", "README.md")
+readme_path = os.path.join(parent_dir, "docs", "README.md")
 if os.path.exists(readme_path):
     with open(readme_path, "r", encoding="utf-8") as fh:
         long_description = fh.read()
@@ -13,7 +13,7 @@ else:
     long_description = "RecruitIQ - Job Market Intelligence CLI Tool"
 
 # Read requirements from project root
-requirements_path = os.path.join(current_dir, "requirements.txt")
+requirements_path = os.path.join(parent_dir, "requirements.txt")
 if os.path.exists(requirements_path):
     with open(requirements_path, "r", encoding="utf-8") as fh:
         requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
@@ -42,7 +42,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/yourusername/recruitiq",
-    packages=find_packages(),
+    package_dir={"": parent_dir},
+    packages=find_packages(where=parent_dir),
     include_package_data=True,
     package_data={
         "recruitiq": ["alembic.ini"],
@@ -76,7 +77,9 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "recruitiq=main:main",
+            "recruitiq=recruitiq.cli.main:app",
+            "recruitiq-interactive=recruitiq.cli.interactive:main",
+            "recruitiq-install=scripts.install:main",
         ],
     },
     keywords="jobs, scraping, analysis, cli, career, recruitment, interactive, terminal, tui, analytics, intelligence",

@@ -14,11 +14,11 @@ import time
 import os
 
 # Import RecruitIQ modules
-from scrapers import IndeedScraper, CompanyScraper, RemoteOKScraper, LinkedInScraper, GlassdoorScraper
-from analyze import JobAnalyzer
-from search import JobSearcher
-from db.session import init_db, get_session, update_or_create_job_posting
-from utils import validate_job_data
+from ..scrapers import IndeedScraper, CompanyScraper, RemoteOKScraper, LinkedInScraper, GlassdoorScraper
+from ..core.analyzer import JobAnalyzer
+from ..core.searcher import JobSearcher
+from ..db.session import init_db, get_session, update_or_create_job_posting
+from ..utils.validators import validate_job_data
 
 # Initialize Typer app and Rich console
 app = typer.Typer(
@@ -47,10 +47,10 @@ def main(
     # If no command is specified, launch interactive interface
     if ctx.invoked_subcommand is None and interactive:
         try:
-            from interactive_cli import main as interactive_main
+            from .interactive import main as interactive_main
             interactive_main()
         except ImportError:
-            console.print("[red]❌ Interactive interface not available. Try: python interactive_cli.py[/red]")
+            console.print("[red]❌ Interactive interface not available. Try: python -m recruitiq.cli.interactive[/red]")
         except Exception as e:
             console.print(f"[red]❌ Error launching interactive interface: {e}[/red]")
             console.print("[yellow]💡 Try running individual commands instead[/yellow]")
@@ -146,7 +146,7 @@ def scrape_all(
         console.print("\n[bold blue]💰 Enriching with Glassdoor salary data...[/bold blue]")
         try:
             session = get_session()
-            from db.models import JobPosting
+            from ..db.models import JobPosting
             
             # Get recent jobs without salary data
             recent_jobs = session.query(JobPosting).filter(
@@ -289,7 +289,7 @@ def enrich_salaries(
     
     try:
         session = get_session()
-        from db.models import JobPosting
+        from ..db.models import JobPosting
         
         # Get jobs that need salary enrichment
         if force:
@@ -517,7 +517,7 @@ def status():
     
     try:
         session = get_session()
-        from db.models import JobPosting
+        from ..db.models import JobPosting
         from sqlalchemy import func
         
         total_jobs = session.query(JobPosting).filter(JobPosting.is_active == True).count()
@@ -586,6 +586,7 @@ def _save_jobs_to_db(jobs: list, source_name: str) -> int:
     saved_count = 0
     
     try:
+        from ..db.session import update_or_create_job_posting
         for job_data in jobs:
             if validate_job_data(job_data):
                 try:
