@@ -136,4 +136,78 @@ def validate_search_params(**kwargs) -> Dict[str, Any]:
         except (ValueError, TypeError):
             cleaned['limit'] = 50  # Default
     
-    return cleaned 
+    return cleaned
+
+
+def validate_email(email: str) -> bool:
+    """Validate email address format"""
+    if not email or not isinstance(email, str):
+        return False
+    
+    email_pattern = re.compile(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    )
+    return email_pattern.match(email.strip()) is not None
+
+
+def validate_url(url: str) -> bool:
+    """Validate URL format"""
+    if not url or not isinstance(url, str):
+        return False
+    
+    # Only allow http/https protocols for security
+    if not url.strip().startswith(('http://', 'https://')):
+        return False
+    
+    return _is_valid_url(url.strip())
+
+
+def validate_salary_range(salary_range: tuple) -> bool:
+    """Validate salary range tuple (min, max)"""
+    if not isinstance(salary_range, tuple) or len(salary_range) != 2:
+        return False
+    
+    min_sal, max_sal = salary_range
+    
+    # Allow None values for partial ranges
+    if min_sal is None and max_sal is None:
+        return False
+    
+    # Check individual values
+    if min_sal is not None:
+        if not isinstance(min_sal, (int, float)) or min_sal <= 0:
+            return False
+    
+    if max_sal is not None:
+        if not isinstance(max_sal, (int, float)) or max_sal <= 0:
+            return False
+    
+    # Check range validity
+    if min_sal is not None and max_sal is not None:
+        if min_sal > max_sal:
+            return False
+    
+    return True
+
+
+def sanitize_input(text: str) -> str:
+    """Sanitize user input to prevent injection attacks"""
+    if not text or not isinstance(text, str):
+        return ""
+    
+    # Remove potentially dangerous patterns
+    text = text.strip()
+    
+    # Remove script tags
+    text = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.IGNORECASE | re.DOTALL)
+    
+    # Remove javascript: protocol
+    text = re.sub(r'javascript:', '', text, flags=re.IGNORECASE)
+    
+    # Remove SQL injection patterns
+    text = re.sub(r'(drop\s+table|delete\s+from|insert\s+into|update\s+set)', '', text, flags=re.IGNORECASE)
+    
+    # Normalize whitespace
+    text = re.sub(r'\s+', ' ', text)
+    
+    return text.strip() 

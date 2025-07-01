@@ -186,4 +186,48 @@ def extract_employment_type(text: str) -> Optional[str]:
 def validate_job_data(job_data: Dict[str, Any]) -> bool:
     """Validate that job data contains required fields"""
     required_fields = ['title', 'company_name', 'source_platform', 'url']
-    return all(field in job_data and job_data[field] for field in required_fields) 
+    return all(field in job_data and job_data[field] for field in required_fields)
+
+def extract_salary(text: str) -> Optional[tuple]:
+    """Extract salary range from text, returns (min, max) tuple or None"""
+    if not text:
+        return None
+    
+    salary_data = parse_salary(text)
+    if salary_data and salary_data.get('min') is not None:
+        return (salary_data['min'], salary_data['max'])
+    return None
+
+def format_currency(amount: Optional[float], currency: str = "USD") -> str:
+    """Format currency amount for display"""
+    if amount is None:
+        return "N/A"
+    
+    symbols = {
+        "USD": "$",
+        "EUR": "€", 
+        "GBP": "£"
+    }
+    
+    symbol = symbols.get(currency, "$")
+    return f"{symbol}{amount:,.2f}".rstrip('0').rstrip('.')
+
+def calculate_match_score(job_skills: List[str], cv_skills: List[str]) -> float:
+    """Calculate job matching score between job requirements and CV skills"""
+    if not job_skills or not cv_skills:
+        return 0.0
+    
+    # Convert to lowercase for comparison
+    job_skills_lower = [skill.lower() for skill in job_skills]
+    cv_skills_lower = [skill.lower() for skill in cv_skills]
+    
+    # Find matches
+    matches = set(job_skills_lower) & set(cv_skills_lower)
+    
+    # Calculate percentage match
+    score = (len(matches) / len(job_skills_lower)) * 100
+    return round(score, 2)
+
+def get_date_range(days: int) -> datetime:
+    """Get date that is 'days' number of days ago"""
+    return datetime.now() - timedelta(days=days) 
